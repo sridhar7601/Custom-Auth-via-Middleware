@@ -1,11 +1,16 @@
 const validateRequest = (req, res, next) => {
-  const { name, age } = req.body;
-  if (!name || typeof name !== 'string') {
-    return res.status(400).json({ error: 'Name is required and should be a string' });
+  const { email, password } = req.body;
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Valid email is required' });
   }
-  if (!age || typeof age !== 'number') {
-    return res.status(400).json({ error: 'Age is required and should be a number' });
+
+  const passwordRegex = /^(?=.*\d)[A-Za-z\d]{8,}$/;
+  if (!password || !passwordRegex.test(password)) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters long and contain at least one number' });
   }
+
   next();
 };
 
